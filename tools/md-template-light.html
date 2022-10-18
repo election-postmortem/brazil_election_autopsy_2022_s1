@@ -1,0 +1,47 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>$TITLE</title>
+    <style>
+        body {
+            background: #ffffff;
+            color: #333333;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        a {
+            color: #1f72af;
+        }
+        code, pre, img {
+            background: #eeeeee;
+            color: #1d4564;
+            padding: 1px;
+            margin: 0 4px;
+
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+        .md-doc {
+            max-width: 1000px;
+            display: inline-block;
+            text-align: left;
+            padding: 16px;
+        }
+        h2, p {
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+<div class="md-doc">
+$MD_DOC
+</div>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<html>
+<head>
+    <meta charset=UTF-8>
+    <title>TSE - Public Data</title>
+    <style>
+        body {
+            background: #2b2b2b;
+            color: #a9b7c5;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        a {
+            color: #66bbff;
+        }
+        code, pre, img {
+            background: #3c3d3e;
+            color: #7795b2;
+            padding: 1px;
+            margin: 0 4px;
+
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+        .md-doc {
+            max-width: 1000px;
+            display: inline-block;
+            text-align: left;
+            padding: 16px;
+        }
+        h2, p {
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+<div class=md-doc>
+<h1>TSE - Public Data</h1>
+<p>The folder <code>tse_public_data</code> contains instructions on how to get
+the public data available through the TSE website : <a href="http://resultados.tse.jus.br">http://resultados.tse.jus.br</a></p>
+<ul>
+<li>TSE stands for: "Tribunal Superior Eleitoral" ("Superior Electoral Court").</li>
+</ul>
+<h2><code>cities-zones-json/*</code></h2>
+<p>The directory <code>cities-zones-json/</code> contains all the information of cities and respective election zones and sections
+for all the states in Brazil.</p>
+<p>These JSON files contaisn the needed information to request the election data of each voting machine,
+public available through the TSE website (<a href="http://resultados.tse.jus.br)">http://resultados.tse.jus.br)</a>.</p>
+<ul>
+<li><code>%UF</code>: stands for a Brazil state code in this document.</li>
+<li><code>ufs.json</code>: list of all the states in Brazil.</li>
+<li><code>zonas-%UF.json</code>: all the election zones of state %UF in Brazil.</li>
+</ul>
+<p>Example:</p>
+<p>For the file <code>zonas-ac.json</code> (state <code>AC</code>):</p>
+<pre><code class="language-json">{
+  "ac": [
+    {
+      "n": "01066",
+      "m": "PORTO WALTER",
+      "zs": [
+        {
+          "0004": [
+            "0077",
+            "0078",
+            "0079",
+            "0080",
+            "0115",
+            "0132",
+            "0144",
+            "0145",
+            "0146",
+            "0164",
+            "0166",
+            "0245",
+            "0311",
+            "0313",
+            "0314",
+            "0316",
+            "0320",
+            "0321",
+            "0325",
+            "0338",
+            "0361",
+            "0372",
+            "0373",
+            "0429",
+            "0430",
+            "0442",
+            "0447"
+          ]
+        }
+      ]
+    },
+    ...
+  ]
+}
+</code></pre>
+<ul>
+<li>State: "ac"</li>
+<li>City code: "01066"</li>
+<li>City name: "PORTO WALTER"</li>
+<li>City election zones: <code>["0004"]</code></li>
+<li>Zone "0004" sections: <code>["0077","0078" ... "0447"]</code></li>
+</ul>
+<h2>Requesting the Voting Machine public files</h2>
+<p>Each city/zone/section has a Voting Machine that generated a file with the results of the poll for the section.
+The result file is called "Boletin de Urna" (Ballot Box) and has the extension ".bu".</p>
+<p>To request the ".bu" file of a section you need a hash number, that can be request through an auxiliar JSON:</p>
+<pre><code class="language-dart">  // Dart code:
+  var uf = "ac"; // state code.
+  var cityCode = "01066"; // city code.
+  var zoneCode = "0004"; // zone code.
+  var sectionCode = "0077"; // section code.
+
+  var urlAux = "https://resultados.tse.jus.br/oficial/ele2022/arquivo-urna/406/dados/$uf/$cityCode/$zoneCode/$sectionCode/p000406-$uf-m$cityCode-z$zoneCode-s$sectionCode-aux.json";
+</code></pre>
+<p>The data at <code>$urlAux</code> above is a JSON. Inside it, you can find a "hash" entry in HEX format that can be used to
+request  the ".bu" file of the section.</p>
+<pre><code class="language-dart">  // Dart code:
+  var uf = "ac"; // state code.
+  var cityCode = "01066"; // city code.
+  var zoneCode = "0004"; // zone code.
+  var sectionCode = "0077"; // section code.
+  var hash = "10111213141516171819a0a1a2a3a4a5a6a7a8a9b0b1b2b3b4b5b6b7b8b9c0c1c2c3c4c5c6c7c8c9d0d1d2d3"; // The BU hash code (not real example).
+
+  var urlBu = "https://resultados.tse.jus.br/oficial/ele2022/arquivo-urna/406/dados/$uf/$cityCode/$zoneCode/$sectionCode/$hash/o00406-$cityCode$zoneCode$sectionCode.bu";
+</code></pre>
+<p>With the correct URL it's possible to download the ".bu" file of a Voting Machine,
+containing the poll results of the election of the respective section.</p>
+<p>This process is the same performed by the TSE website: <a href="http://resultados.tse.jus.br">http://resultados.tse.jus.br</a></p>
+<h2>BU Format</h2>
+<p>The TSE website provides a Zip file (<code>formato-arquivos-bu-rdv-ass-digital.zip</code>)
+that explains the format of a ".bu" file specified in ASN.1 (Abstract Syntax Notation One) and
+encoded in BER (Basic Encoding Rules).</p>
+<p>Inside it there's some <code>python/*.py</code> scripts to read and validate a ".bu" file.</p>
+<p>To export the data inside a ".bu" file you can use the script <code>bu_dump.py</code>.</p>
+<h2><code>bu-files/</code> directory</h2>
+<p>To use this project a <code>bu-files/</code> directory (at <code>/tse_public_data/bu-files/</code>) is needed.
+It will contain all the ".bu" files to be analysed.</p>
+<p>The files should be downloaded and saved in the structure below:</p>
+<ul>
+<li>
+<p><code>bu-files/$uf/$cityCode/$uf-$cityCode-$zoneCode-$sectionCode.bu</code></p>
+</li>
+<li>
+<p>File path example:</p>
+<ul>
+<li><code>bu-files/ac/01066/ac-01066-0004-0077.bu</code></li>
+</ul>
+</li>
+<li>
+<p><code>$uf</code>: state code in Brazil.</p>
+</li>
+<li>
+<p><code>$cityCode</code>: city code.</p>
+</li>
+<li>
+<p><code>$zoneCode</code>: city electoral zone code.</p>
+</li>
+<li>
+<p><code>$sectionCode</code>: zone section code.</p>
+</li>
+<li>
+<p>NOTE: the <code>bu-files/</code> directory will be mapped by the <code>bu-docker</code> container at <code>/bu-files</code>.</p>
+</li>
+</ul>
+<h2>Compressed BU files</h2>
+<p>To facilitate statistics analysis it's provided a compressed
+version of the BU files JSON at <code>bu-files/bus-%UF.comp</code>. Each compressed file 
+have all the ".bu" files information (in JSON format) for each UF (state in Brazil).</p>
+<p>This compressed files can be generated/read using the tool
+<code>../bu_statistics/bin/bu_compressor.dart</code>.</p>
+<h2>BU Docker Image</h2>
+<p>To facilitate the execution of the <code>python/*.py</code> scripts a Docker image is provided
+at <code>bu-docker/Dockerfile</code> (based on the <code>python</code> image),
+that uses inside it the files at <code>bu-docker/docker-files/</code>.</p>
+<p>A modified version of the <code>bu_dump.py</code> that can export the BU data to JSON
+is provided at <code>bu-docker/docker-files/python/bu_dump_json.py</code>.</p>
+<p>To build the <code>bu-docker</code> image in your Docker environment:</p>
+<pre><code class="language-shell">cd bu-docker/
+./build-bu-docker-image.sh
+</code></pre>
+<h3>Bash scripts to use the <code>bu-docker</code> image:</h3>
+<p>After build the <code>bu-docker</code> image and have the <code>bu-files/</code> directory populated with ".bu" files
+you can use the <code>run-bu-dump-*.sh</code> bash scripts.</p>
+<ul>
+<li><code>run-bu-dump-json.sh</code>:
+<ul>
+<li>Runs the <code>bu-docker</code> image and processes a city directory.</li>
+<li>Mounts <code>./bu-files/</code> to <code>/bu-files</code> in the container.</li>
+<li>Usage:
+<ul>
+<li><code>./run-bu-dump-json.sh "/bu-files/$uf/$cityCode"</code></li>
+<li>Note that the directory argument above is the path inside the docker image (<code>/bu-files/$uf</code>).</li>
+<li>Example:
+<ul>
+<li><code>./run-bu-dump-json.sh "/bu-files/ac/01066"</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>The execution will create a <code>.json.gz</code> file (JSON + Gzip) for each ".bu" file in the city directory.
+<ul>
+<li>Generated JSON file path example:
+<ul>
+<li><code>bu-files/ac/01066/ac-01066-0004-0077.bu.json.gz</code></li>
+</ul>
+</li>
+</ul>
+</li>
+<li>NOTE:
+<ul>
+<li>After the execution the Docker container is automatically removed due the <code>docker run --rm</code> parameter.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>run-bu-dump-uf.sh</code>:
+<ul>
+<li>Will process an entire UF (state) directory.</li>
+<li>Example:
+<ul>
+<li><code>./run-bu-dump-uf.sh ac</code></li>
+<li><code>./run-bu-dump-uf.sh sp</code></li>
+<li><code>./run-bu-dump-uf.sh rj</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><code>run-bu-dump-uf-all.sh</code>:
+<ul>
+<li>Will automatically call <code>run-bu-dump-uf.sh</code> for all the states (UFs) in Brazil.</li>
+</ul>
+</li>
+</ul>
+<h2>Public Data</h2>
+<p>These ".bu" files are public available data, provided
+to anyone that accesses the TSE website starting from 2022/10/02.</p>
+<p>This document was written in 2022/10/07.
+It's possible that the access URL has changed after the release date of this project.</p>
+</div>
+</body>
+</html>

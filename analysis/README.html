@@ -1,0 +1,111 @@
+<html>
+<head>
+    <meta charset=UTF-8>
+    <title>BU Analysis</title>
+    <style>
+        body {
+            background: #2b2b2b;
+            color: #a9b7c5;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        a {
+            color: #66bbff;
+        }
+        code, pre, img {
+            background: #3c3d3e;
+            color: #7795b2;
+            padding: 1px;
+            margin: 0 4px;
+
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+        .md-doc {
+            max-width: 1000px;
+            display: inline-block;
+            text-align: left;
+            padding: 16px;
+        }
+        h2, p {
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+<div class=md-doc>
+<h1>BU Analysis</h1>
+<p>This directory contains statistical analysis of the BU files of the 
+Brazilian election (2022/10/02), separated by state (UF) in Brazil.</p>
+<ul>
+<li><code>BU</code> stands for "Boletin de Urna" (Ballot Box).</li>
+<li><code>UF</code> stands for a state in Brazil.</li>
+</ul>
+<p>All the analysis are based on <strong>public available data</strong> of the Voting Machines
+of the election in Brazil from the TSE website : <a href="http://resultados.tse.jus.br">http://resultados.tse.jus.br</a></p>
+<ul>
+<li>TSE stands for: "Tribunal Superior Eleitoral" ("Superior Electoral Court").</li>
+</ul>
+<h2><code>./sp</code> (São Paulo)</h2>
+<ul>
+<li>
+<p><code>./sp/bu-statistics--sp--$METRIC.csv</code>: a CSV file for each analyzed metric.</p>
+</li>
+<li>
+<p><code>./sp/bus.csv</code>: A CSV file with information of all the BUs used in the analysis.</p>
+<ul>
+<li><em>This file allows you to check the data with the TSE website and the results of the analysis.</em></li>
+</ul>
+</li>
+<li>
+<p><code>./sp/ANALYSIS-SP.md</code>: the description of the insights and anomalies found.</p>
+<ul>
+<li><code>./sp/ANALYSIS-SP.html</code>: HTML version.</li>
+<li><code>./sp/ANALYSIS-SP.pdf</code>: PDF version.</li>
+<li><code>./sp/ANALYSIS-SP-pt_br.html</code>: HTML version (automatic translation: <em>en</em> to <em>pt_BR</em>).</li>
+<li><code>./sp/ANALYSIS-SP-pt_br.pdf</code>: PDF version (automatic translation: <em>en</em> to <em>pt_BR</em>).</li>
+</ul>
+</li>
+<li>
+<p>NOTE: The state of São Paulo represents 27 million of votes
+from the 123 million of votes in Brazil</p>
+</li>
+</ul>
+<h2><code>./mg</code> (Minas Gerais)</h2>
+<ul>
+<li><code>./mg/bu-statistics--mg--$METRIC.csv</code>: a CSV file for each analyzed metric.</li>
+</ul>
+<h2><code>./ba</code> (Bahia)</h2>
+<ul>
+<li><code>./ba/bu-statistics--ba--$METRIC.csv</code>: a CSV file for each analyzed metric.</li>
+</ul>
+<h2><code>./rj</code> (Rio de Janeiro)</h2>
+<ul>
+<li><code>./rj/bu-statistics--rj--$METRIC.csv</code>: a CSV file for each analyzed metric.</li>
+</ul>
+<h2>See Also</h2>
+<p>See the other directories in the project:</p>
+<ul>
+<li><code>../tse_public_data/</code></li>
+<li><code>../bu_statistics/</code></li>
+</ul>
+<h2>LICENSE</h2>
+<p>MIT License</p>
+<h2>Authors</h2>
+<p>The authors of this analysis worked hard to give a fully reproducible work,
+what legitimates the data and the analysis of this Election data.</p>
+<p>This work was verified by people at different major universities in
+Brazil, USA and Switzerland.</p>
+<p>If necessary this address will be used to guarantee the authorship of the work:</p>
+<pre><code class="language-text">1Gh5Qtc7UpLt31Ma85HwZLduGwPFHFS2AH
+</code></pre>
+</div>
+</body>
+</html>

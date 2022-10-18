@@ -1,0 +1,263 @@
+<html>
+<head>
+    <meta charset=UTF-8>
+    <title>São Paulo (SP) - BU Analysis</title>
+    <style>
+        body {
+            background: #2b2b2b;
+            color: #a9b7c5;
+            font-family: Arial, Helvetica, sans-serif;
+            text-align: center;
+        }
+        a {
+            color: #66bbff;
+        }
+        code, pre, img {
+            background: #3c3d3e;
+            color: #7795b2;
+            padding: 1px;
+            margin: 0 4px;
+
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+        .md-doc {
+            max-width: 1000px;
+            display: inline-block;
+            text-align: left;
+            padding: 16px;
+        }
+        h2, p {
+            break-inside: avoid;
+            break-before: page;
+
+            page-break-inside: avoid;
+            page-break-before: always;
+        }
+    </style>
+</head>
+<body>
+<div class=md-doc>
+<h1>São Paulo (SP) - BU Analysis</h1>
+<p><strong>Brazilian Election - 2022/10/02</strong></p>
+<hr />
+<p>This is a statistical analysis of the BU files
+of the state of São Paulo (SP).</p>
+<ul>
+<li><code>BU</code> stands for "Boletin de Urna" (Ballot Box).</li>
+</ul>
+<p>All analyzes are based on <strong>public available data</strong> of the Voting Machines
+of the election in Brazil from the TSE website: <a href="http://resultados.tse.jus.br">http://resultados.tse.jus.br</a></p>
+<ul>
+<li>TSE stands for: "Tribunal Superior Eleitoral" ("Superior Electoral Court").</li>
+</ul>
+<p>For the state of São Paulo (SP) <code>101071</code> BU files were analyzed (99.9% of all the available BU files).</p>
+<ul>
+<li>NOTE: The state of São Paulo represents 27 million of votes
+from the 123 million of votes in Brazil</li>
+</ul>
+<h2>SP Results:</h2>
+<ul>
+<li>Office election: <code>presidente</code></li>
+<li>Abstentions Ratio: <code>0.2161</code></li>
+<li>Total votes: <code>25655938</code> (valid votes: ignoring <code>blank</code> and <code>null</code> votes)</li>
+<li>BUs: <code>101071</code></li>
+</ul>
+<ul>
+<li>Candidate: <code>22</code>
+<ul>
+<li>Votes: <code>12239783</code> (<code>47.71%</code>)</li>
+<li>BUs: <code>101067</code> (with votes for this candidate).</li>
+<li>Average votes by BU: 121.11</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li>Candidate: <code>13</code>
+<ul>
+<li>Votes: <code>10489884</code> (<code>40.89%</code>)</li>
+<li>BUs: <code>101071</code> (with votes for this candidate).</li>
+<li>Average votes by BU: 103.79</li>
+</ul>
+</li>
+</ul>
+<h2>Metrics</h2>
+<p>The analyzed metrics are:</p>
+<ul>
+<li><code>closeDate</code>:
+<ul>
+<li>BUs ordered by <code>close</code> date.
+<ul>
+<li>The date of the LAST vote int the Voting Machine.</li>
+</ul>
+</li>
+<li>Checks if the <code>closeDate</code> (last vote) of a Voting Machine influences the voting ratio for a candidate.</li>
+</ul>
+</li>
+<li><code>generationDate</code>:
+<ul>
+<li>BUs ordered by <code>generation</code> date.
+<ul>
+<li>The date that the original BU file was generated.</li>
+</ul>
+</li>
+<li>Checks if the <code>generationDate</code> of a Voting Machine influences the voting ratio for a candidate.</li>
+</ul>
+</li>
+<li><code>emissionDate</code>:
+<ul>
+<li>BUs ordered by <code>emission</code> date.
+<ul>
+<li>The date that the original BU file was emitted.</li>
+</ul>
+</li>
+<li>Checks if the <code>emissionDate</code> of a Voting Machine influences the voting ratio for a candidate.</li>
+</ul>
+</li>
+<li><code>loadDate</code>:
+<ul>
+<li>BUs ordered by <code>load</code> date.
+<ul>
+<li>The date that the Voting Machine system was loaded/installed.</li>
+</ul>
+</li>
+<li>Checks if the loaded/installed system at some date influences the voting ratio for a candidate.</li>
+</ul>
+</li>
+<li><code>votersReleasedByCodeRatio</code>:
+<ul>
+<li>BUs ordered by <code>votersReleasedByCodeRatio</code>.
+<ul>
+<li>The ratio of votes released by code (without biometric input: finger scan).</li>
+</ul>
+</li>
+<li>Checks if Voting Machines with less or more votes without biometric input have some anomaly/tendency for a candidate.</li>
+</ul>
+</li>
+<li><code>onlyPresidentVotesRatio</code>:
+<ul>
+<li>BUs ordered by <code>onlyPresidentOfficeVotesRatio</code>.
+<ul>
+<li>The ratio of votes only for president (without vote for governor) in the same election day.</li>
+<li>It can have a ratio &gt; then 1.0, since it's possible to have votes for governor and not for president too.</li>
+</ul>
+</li>
+<li>Checks if Voting Machines with more votes only for president have some anomaly/tendency for a candidate.</li>
+</ul>
+</li>
+</ul>
+<h2>Exported Statistics</h2>
+<p>You can find a CSV file for each analyzed metric:</p>
+<ul>
+<li><code>./bu-statistics--sp--$METRIC.csv</code>:</li>
+</ul>
+<h2>SP - <code>closeDate</code> (main anomaly)</h2>
+<p>The main statistical <em>"anomaly"</em> can be found in the <code>closeDate</code> metric for president.</p>
+<p>The <code>closeDate</code> is the date and time the Voting Machine closes on election day.
+This is defined by the time of the <strong>LAST</strong> vote in the voting machine
+(<em>also the LAST vote to influence the BU file</em>).</p>
+<p>The formal definition at file <code>bu.asn1</code> is:</p>
+<ul>
+<li>(ENG) <code>closeDate</code>: Date and time of end of vote acquisition (last vote) in the format adopted by the Electoral Court (YYYYMMDDThhmmss).</li>
+<li>(PT) <code>closeDate</code>: dataHoraEncerramento: Data e hora do término da aquisição do voto (Último voto) no formato adotado pela Justiça Eleitoral (YYYYMMDDThhmmss).</li>
+</ul>
+<p>The real world process to "close" the Voting Machine depends on a closing operation
+started manually by the operator of the Voting Machine, that should happen soon after
+the last vote.</p>
+<p>If everything happens normally in a voting section the voting machine is closed at <code>17:00</code>,
+and the last vote must take place near this time.</p>
+<p>In the state of São Paulo <code>101071</code> BU files (one for each Voting Machine) where analyzed,
+totaling <code>25655938</code> votes for president.</p>
+<p>In this metric we sort the BUs by <code>closeDate</code>. From <code>17:00</code> to <code>17:10</code> the closed BUs will have
+<code>72.43%</code> of all votes in the state, with <code>18583664</code> votes in <code>75756</code> BUs.</p>
+<p>After sort the BUs by <code>closeDate</code> we separate them in blocks of 30s, then we
+calculate the voting statistics of the 30s block (non-cumulative).</p>
+<ul>
+<li><code>17:00:00 - (Candidate 22: 545029 votes 53.19%) ; (Candidate 13: 369012 votes 36.02%) ; (total votes: 1024592 3.99% ; abstentions: 22.41%)</code></li>
+<li>...</li>
+<li><code>17:05:00 - (Candidate 22: 378934 votes 47.42%) ; (Candidate 13: 325173 votes 40.69%) ; (total votes: 14205687 55.37% ;  abstentions: 21.64%)</code></li>
+<li>...</li>
+<li><code>17:10:00 - (Candidate 22: 114929 votes 43.47%) ; (Candidate 13: 117562 votes 44.47%) ; (total votes: 18583664 72.43% ;  abstentions: 21.38%)</code></li>
+</ul>
+<p>It's very easy to see that the voting percentage for candidate <code>13</code> went from <code>36%</code> to <code>44%</code>
+in 10min (with 18583664 of total votes and 72% of all available votes). For the candidate
+<code>22</code> it went from <code>53%</code> to <code>43%</code>.</p>
+<p><strong>The main issue is that the <code>closeDate</code> is not the calculation time by the TSE computer,
+but the actual time of the last vote and closing operation in each Voting Machine.
+This is <em>IMPOSSIBLE</em> to happen in a real world, because a VERY HIGH percentage of
+BUs will need to be coordinated to have the close operation in the Voting Machine to happen
+in the exact same distribution of the results in the Voting Machine for candidate 13
+(from <code>36%</code> to <code>44%</code>). It would be necessary to know a priori the result of each Voting
+Machine to include the last vote in the correct order of Voting Machines.</strong></p>
+<p><strong>Since we are talking about an event of only 10min, <code>75756</code> BUs and <code>18583664</code> of votes <em>(one vote per person in the day)</em>,
+it's <em>IMPOSSIBLE</em> to have this behavior in the real world without break the integrity of the Voting Machines
+and  without have the active participation of thousand of people to generate this <code>closeDate</code> behavior.</strong></p>
+<p>Here's the first 10min of the CSV file for the <code>closeDate</code> metric:</p>
+<p><code>bu-statistics--sp--closeDate.csv</code>:</p>
+<table><thead><tr><th>closeDate</th><th>ratio:22</th><th>ratio:13</th><th>votes:22</th><th>votes:13</th><th>votes:*</th><th>bus</th><th>turnout</th><th>abstentions</th><th>absten.Ratio</th><th>votersW/oBiom.mean</th><th>total</th><th>totalRatio</th></tr></thead><tbody><tr><td>17:00:00</td><td>0.5319</td><td>0.3602</td><td>545029</td><td>369012</td><td>1024592</td><td>4403</td><td>1081960</td><td>312508</td><td>0.2241</td><td>37.6893</td><td>1024592</td><td>0.0399</td></tr><tr><td>17:00:30</td><td>0.5331</td><td>0.3607</td><td>935715</td><td>633197</td><td>1755296</td><td>7509</td><td>1853732</td><td>533225</td><td>0.2234</td><td>37.7829</td><td>2779888</td><td>0.1084</td></tr><tr><td>17:01:00</td><td>0.5277</td><td>0.3645</td><td>978305</td><td>675654</td><td>1853807</td><td>7796</td><td>1958942</td><td>556199</td><td>0.2211</td><td>39.0747</td><td>4633695</td><td>0.1806</td></tr><tr><td>17:01:30</td><td>0.5205</td><td>0.3694</td><td>875198</td><td>621159</td><td>1681477</td><td>7015</td><td>1776777</td><td>500792</td><td>0.2199</td><td>40.8778</td><td>6315172</td><td>0.2461</td></tr><tr><td>17:02:00</td><td>0.5124</td><td>0.3760</td><td>801159</td><td>587892</td><td>1563479</td><td>6455</td><td>1652913</td><td>464824</td><td>0.2195</td><td>44.2830</td><td>7878651</td><td>0.3071</td></tr><tr><td>17:02:30</td><td>0.5046</td><td>0.3823</td><td>687946</td><td>521232</td><td>1363313</td><td>5589</td><td>1442363</td><td>402836</td><td>0.2183</td><td>45.4366</td><td>9241964</td><td>0.3602</td></tr><tr><td>17:03:00</td><td>0.4993</td><td>0.3870</td><td>617503</td><td>478658</td><td>1236732</td><td>5048</td><td>1308617</td><td>363639</td><td>0.2175</td><td>45.9509</td><td>10478696</td><td>0.4084</td></tr><tr><td>17:03:30</td><td>0.4934</td><td>0.3912</td><td>537492</td><td>426138</td><td>1089377</td><td>4395</td><td>1153053</td><td>315410</td><td>0.2148</td><td>48.2858</td><td>11568073</td><td>0.4509</td></tr><tr><td>17:04:00</td><td>0.4882</td><td>0.3955</td><td>467084</td><td>378421</td><td>956838</td><td>3861</td><td>1014121</td><td>278180</td><td>0.2153</td><td>48.9218</td><td>12524911</td><td>0.4882</td></tr><tr><td>17:04:30</td><td>0.4791</td><td>0.4033</td><td>422384</td><td>355564</td><td>881624</td><td>3526</td><td>934212</td><td>256274</td><td>0.2153</td><td>51.7147</td><td>13406535</td><td>0.5226</td></tr><tr><td>17:05:00</td><td>0.4742</td><td>0.4069</td><td>378934</td><td>325173</td><td>799152</td><td>3181</td><td>847335</td><td>233998</td><td>0.2164</td><td>51.6784</td><td>14205687</td><td>0.5537</td></tr><tr><td>17:05:30</td><td>0.4645</td><td>0.4165</td><td>318909</td><td>285990</td><td>686615</td><td>2736</td><td>727772</td><td>200512</td><td>0.2160</td><td>52.3154</td><td>14892302</td><td>0.5805</td></tr><tr><td>17:06:00</td><td>0.4654</td><td>0.4174</td><td>279008</td><td>250226</td><td>599499</td><td>2362</td><td>636380</td><td>174808</td><td>0.2155</td><td>54.5059</td><td>15491801</td><td>0.6038</td></tr><tr><td>17:06:30</td><td>0.4553</td><td>0.4265</td><td>239231</td><td>224091</td><td>525386</td><td>2052</td><td>557622</td><td>150824</td><td>0.2129</td><td>55.2729</td><td>16017187</td><td>0.6243</td></tr><tr><td>17:07:00</td><td>0.4589</td><td>0.4211</td><td>226740</td><td>208061</td><td>494048</td><td>1920</td><td>524576</td><td>142979</td><td>0.2142</td><td>56.5354</td><td>16511235</td><td>0.6436</td></tr><tr><td>17:07:30</td><td>0.4502</td><td>0.4299</td><td>196948</td><td>188068</td><td>437509</td><td>1692</td><td>464587</td><td>126995</td><td>0.2147</td><td>57.2606</td><td>16948744</td><td>0.6606</td></tr><tr><td>17:08:00</td><td>0.4470</td><td>0.4324</td><td>177433</td><td>171646</td><td>396935</td><td>1522</td><td>421668</td><td>113090</td><td>0.2115</td><td>58.6104</td><td>17345679</td><td>0.6761</td></tr><tr><td>17:08:30</td><td>0.4469</td><td>0.4317</td><td>157426</td><td>152061</td><td>352276</td><td>1344</td><td>374234</td><td>102765</td><td>0.2154</td><td>59.7329</td><td>17697955</td><td>0.6898</td></tr><tr><td>17:09:00</td><td>0.4391</td><td>0.4394</td><td>141773</td><td>141868</td><td>322882</td><td>1231</td><td>343516</td><td>93084</td><td>0.2132</td><td>58.5491</td><td>18020837</td><td>0.7024</td></tr><tr><td>17:09:30</td><td>0.4393</td><td>0.4391</td><td>131108</td><td>131057</td><td>298462</td><td>1126</td><td>317010</td><td>85285</td><td>0.2120</td><td>58.9547</td><td>18319299</td><td>0.7140</td></tr><tr><td>17:10:00</td><td>0.4347</td><td>0.4447</td><td>114929</td><td>117562</td><td>264365</td><td>993</td><td>280689</td><td>76326</td><td>0.2138</td><td>58.0916</td><td>18583664</td><td>0.7243</td></tr></tbody></table>
+<ul>
+<li><em>The CSV is generated until 84% of all votes, since after
+that each <code>closeDate</code> block of 30s is too small in BUs for statistical
+analysis.</em></li>
+<li><code>absten.Ratio</code>and <code>votersW/oBiom.mean</code> column names were "abbreviated" to reduce the table width in PDF.</li>
+<li>See <code>bu-statistics--sp--closeDate.csv</code> for extra columns.</li>
+<li>See <code>bu-statistics--sp--closeDate--commadec.csv</code> if you need comma (<code>,</code>) as decimal delimiter.</li>
+</ul>
+<p>CSV Columns:</p>
+<ul>
+<li><code>closeDate</code>: The time of BUs block (by <code>closeDate</code> and 30s window).</li>
+<li><code>ratio:22</code>: Votes ratio for candidate <code>22</code> (non-cumulative).</li>
+<li><code>ratio:13</code>: Votes ratio for candidate <code>13</code> (non-cumulative).</li>
+<li><code>votes:22</code>: Votes for candidate <code>22</code> (non-cumulative).</li>
+<li><code>votes:13</code>: Votes for candidate <code>13</code> (non-cumulative).</li>
+<li><code>votes:*</code>: Votes for all candidates (non-cumulative).</li>
+<li><code>bus</code>: Number of BU files in the block.</li>
+<li><code>turnout</code>: The total number of people voting.</li>
+<li><code>abstentions</code>: The number of abstentions (people who did not attend the election).</li>
+<li><code>abstentionsRatio</code>: The ratio of abstentions.</li>
+<li><code>votersWithoutBiometrics</code>: Number of votes without biometric identification.</li>
+<li><code>total</code>: Total number of votes (cumulative).</li>
+<li><code>totalRatio</code>: Ratio of <code>total</code> votes (cumulative).</li>
+</ul>
+<h2>SP - BUs Chart</h2>
+<p>You can see in the image below a chart with the data in
+the <code>bu-statistics--sp--closeDate.csv</code> file.</p>
+<p><img src="SP-BU-Chart-800px.png" alt="SP - BUs Chart - by closeDate" /></p>
+<h3>Comparing with SC</h3>
+<p>If compared with the state of Santa Catarina (SC)
+the anomaly in SP is clearly visible:</p>
+<p><img src="../sc/SC-BU-Chart-800px.png" alt="SC - BUs Chart - by closeDate" /></p>
+<p>What the comparison showed:</p>
+<ul>
+<li><strong>In SP the number of <code>votersWithoutBiometrics</code> is much higher.</strong></li>
+<li><strong>The <code>abstentions</code> in SP is a straight line (not following the proportion of eligibleVoters in th BUs).</strong></li>
+</ul>
+<h3>Chart Series:</h3>
+<ul>
+<li><code>eligibleVoters.mean</code>: The total number of eligible voters in the BU (average by BU).</li>
+<li><code>turnout.mean</code>: The total number of people voting (average by BU).</li>
+<li><code>votes:*.mean</code>: The average of total valid votes per BU.</li>
+<li><code>votersBiometric.mean</code>: Number of votes with biometric identification (average by BU).</li>
+<li><code>votes.mean:22</code>: The average of voters per BU for candidate <code>22</code>.</li>
+<li><code>votes.mean:13</code>: The average of voters per BU for candidate <code>13</code>.</li>
+<li><code>abstentions.mean</code>: The number of abstentions (average by BU).</li>
+<li><code>votersWithoutBiometrics.mean</code>: Number of votes without biometric identification (average by BU).</li>
+<li><code>votersByCode.mean</code>: Number of votes with failed biometric identification, and released by code (average by BU).</li>
+<li><code>closeDate</code>: The time of BUs block (by <code>closeDate</code> and 30s window) (Axis X).</li>
+</ul>
+<h2>LICENSE</h2>
+<p>MIT License</p>
+<h2>Authors</h2>
+<p>The authors of this analysis worked hard to give a fully reproducible work,
+what legitimates the data and the analysis of this Election data.</p>
+<p>This work was verified by people at different major universities in
+Brazil, USA and Switzerland.</p>
+<p>If necessary this address will be used to guarantee the authorship of the work:</p>
+<pre><code class="language-text">1Gh5Qtc7UpLt31Ma85HwZLduGwPFHFS2AH
+</code></pre>
+</div>
+</body>
+</html>
